@@ -11,6 +11,11 @@
 npm-debug.log
 yarn-error.log
 
+# Local Angular CLI proxy settings. Deployment compose settings live in deploy/.
+/.env.dev
+/.env.staging
+/.env.prod
+
 # IDEs and editors
 .idea/
 .project

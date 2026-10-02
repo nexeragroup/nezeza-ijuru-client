@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.site-layout {
+  min-height: 100vh;
+}

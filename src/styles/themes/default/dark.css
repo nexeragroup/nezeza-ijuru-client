@@ -1,0 +1,147 @@
+[data-color-theme="default"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --black: #0d171c;
+  --white: #f9f2d6;
+  --brand-cream: #f9f2d6;
+  --brand-navy: #2f4858;
+  --brand-green: #4b8179;
+  --brand-gold: #b69021;
+
+  --background: #0d171c;
+  --background-subtle: #101b20;
+  --background-muted: var(--surface-secondary);
+  --surface: #142127;
+  --surface-secondary: #19282f;
+  --surface-tertiary: #20323a;
+  --surface-hover: #243940;
+  --surface-active: #2b454d;
+  --surface-selected: #1a3a37;
+
+  --primary: #75b8ad;
+  --primary-hover: #8ac9bd;
+  --primary-active: #a1d8cc;
+  --primary-light: #2e655e;
+  --primary-subtle: #173c37;
+  --primary-strong: #b8e6dc;
+  --on-primary: #0d171c;
+
+  --text-primary: #f9f2d6;
+  --text-secondary: #c6d7de;
+  --text-tertiary: #9fb4bc;
+  --text-muted: var(--text-tertiary);
+  --text-disabled: #6f858d;
+  --text-brand: #a1d8cc;
+  --text-link: #a1d8cc;
+  --text-link-hover: #c2eee4;
+  --text-inverse: #0d171c;
+
+  --border: #354951;
+  --border-hover: #56766f;
+  --border-active: #75b8ad;
+  --border-strong: #4d6871;
+
+  --input-background: #111c22;
+  --input-border: #3d515a;
+  --input-border-hover: #628d85;
+  --input-border-focus: #75b8ad;
+
+  --nav-background: #111c22;
+  --nav-text: #d7e5e6;
+  --nav-hover-background: #1a3a37;
+  --nav-hover-text: #b8e6dc;
+  --nav-active-background: #2e655e;
+  --nav-active-text: #f9f2d6;
+
+  --sidebar-background: #111c22;
+  --sidebar-border: #354951;
+  --sidebar-item-hover: #1a3a37;
+  --sidebar-item-active: #2e655e;
+  --sidebar-item-active-text: #f9f2d6;
+
+  --button-primary-background: #75b8ad;
+  --button-primary-hover: #8ac9bd;
+  --button-primary-active: #a1d8cc;
+  --button-primary-text: #0d171c;
+  --button-secondary-background: var(--brand-navy);
+  --button-secondary-hover: #3d6074;
+  --button-secondary-active: #507b91;
+  --button-secondary-subtle: #1d3039;
+  --button-secondary-light: #29434f;
+  --button-secondary-text: #f9f2d6;
+  --button-accent-background: #d2ab37;
+  --button-accent-hover: #e1bd52;
+  --button-accent-active: #edd071;
+  --button-accent-subtle: #3d3213;
+  --button-accent-light: #594a1c;
+  --button-accent-text: #0d171c;
+  --button-on-solid: #0d171c;
+
+  --table-header-background: #19282f;
+  --table-row-hover: #1b2c33;
+  --table-row-selected: #1a3a37;
+  --focus-ring: #75b8ad;
+  --selection-background: #75b8ad;
+  --selection-text: #0d171c;
+  --overlay-background: rgb(0 0 0 / 72%);
+
+  --alert-primary: #a1d8cc;
+  --alert-primary-subtle: #173c37;
+  --alert-primary-light: #24524c;
+  --alert-primary-on-color: #0d171c;
+  --alert-success: #93e0bc;
+  --alert-success-subtle: #123b31;
+  --alert-success-light: #1a5042;
+  --alert-success-on-color: #0d171c;
+  --alert-warning: #f1cd61;
+  --alert-warning-subtle: #3d3213;
+  --alert-warning-light: #594a1c;
+  --alert-warning-on-color: #0d171c;
+  --alert-danger: #ff9c91;
+  --alert-danger-subtle: #48221f;
+  --alert-danger-light: #633029;
+  --alert-danger-on-color: #0d171c;
+  --alert-info: #b5d7e9;
+  --alert-info-subtle: #162d39;
+  --alert-info-light: #214152;
+  --alert-info-on-color: #0d171c;
+  --alert-on-solid: #0d171c;
+
+  --badge-neutral-background: #24343b;
+  --badge-neutral-border: #3d515a;
+  --badge-neutral-text: #d7e5e6;
+  --badge-neutral-on-color: #0d171c;
+  --badge-primary-background: #173c37;
+  --badge-primary-border: #2e655e;
+  --badge-primary-text: #a1d8cc;
+  --badge-primary-on-color: #0d171c;
+  --badge-success-background: #123b31;
+  --badge-success-border: #1a5042;
+  --badge-success-text: #93e0bc;
+  --badge-success-on-color: #0d171c;
+  --badge-warning-background: #3d3213;
+  --badge-warning-border: #594a1c;
+  --badge-warning-text: #f1cd61;
+  --badge-warning-on-color: #0d171c;
+  --badge-danger-background: #48221f;
+  --badge-danger-border: #633029;
+  --badge-danger-text: #ff9c91;
+  --badge-danger-on-color: #0d171c;
+  --badge-info-background: #162d39;
+  --badge-info-border: #214152;
+  --badge-info-text: #b5d7e9;
+  --badge-info-on-color: #0d171c;
+
+  --slate-50: #19282f;
+  --slate-100: #24343b;
+  --slate-200: #3d515a;
+  --slate-700: #c6d7de;
+  --slate-800: #e0eaec;
+  --slate-900: #f9f2d6;
+
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 24%);
+  --shadow-sm: 0 2px 6px rgb(0 0 0 / 28%);
+  --shadow-md: 0 8px 16px rgb(0 0 0 / 30%);
+  --shadow-lg: 0 16px 24px rgb(0 0 0 / 34%);
+  --shadow-xl: 0 24px 36px rgb(0 0 0 / 38%);
+}

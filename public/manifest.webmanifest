@@ -1,0 +1,17 @@
+{
+  "name": "Nezeza Ijuru",
+  "short_name": "Nezeza Ijuru",
+  "description": "An annual Gospel mission centred on evangelism, discipleship, worship, families, youth, and compassionate service.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9f2d6",
+  "theme_color": "#2f4858",
+  "icons": [
+    {
+      "src": "/icons/icon.png",
+      "sizes": "5673x7395",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

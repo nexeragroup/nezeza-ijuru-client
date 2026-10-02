@@ -1,0 +1,61 @@
+name: Deploy web staging
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-staging-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DEPLOY_ROOT: /home/yves/nezeza-ijuru/staging
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+      - name: Prepare deployment folders
+        run: |
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "install -d -m 0755 '$DEPLOY_ROOT/web' '$DEPLOY_ROOT/logs' '$DEPLOY_ROOT/data' && (docker network inspect nezeza-ijuru-staging-network >/dev/null 2>&1 || docker network create nezeza-ijuru-staging-network)"
+
+      - name: Synchronize web application
+        run: |
+          rsync -az --delete \
+            --exclude='/.env.*' \
+            --exclude='/.angular/' \
+            --exclude='/.git/' \
+            --exclude='/coverage/' \
+            --exclude='/dist/' \
+            --exclude='/node_modules/' \
+            -e "ssh -p $DEPLOY_PORT" \
+            ./ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_ROOT/web/"
+
+      - name: Build and run web service
+        run: |
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd '$DEPLOY_ROOT/web' && docker compose --env-file deploy/.env.staging -f deploy/compose.staging.yml up -d --build --remove-orphans"
+
+      - name: Verify web health
+        run: |
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "for attempt in \$(seq 1 12); do curl --fail --silent --show-error --resolve staging.nezezaijuru.org:443:127.0.0.1 https://staging.nezezaijuru.org/ && exit 0; sleep 5; done; docker logs --tail=100 nezeza-ijuru-web-staging; exit 1"

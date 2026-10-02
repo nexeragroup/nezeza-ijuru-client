@@ -1,0 +1,11 @@
+.angular
+.codex
+.git
+.github
+.vscode
+dist
+src/**/*.js
+node_modules
+coverage
+deploy
+.env.*

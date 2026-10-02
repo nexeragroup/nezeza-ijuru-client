@@ -1,0 +1,148 @@
+:root,
+[data-color-theme="default"][data-theme="light"] {
+  color-scheme: light;
+
+  --black: #172630;
+  --white: #fffdf8;
+  --brand-cream: #f9f2d6;
+  --brand-navy: #2f4858;
+  --brand-green: #4b8179;
+  --brand-gold: #b69021;
+
+  --background: #f7f4ed;
+  --background-subtle: var(--brand-cream);
+  --background-muted: var(--surface-secondary);
+  --surface: #fffdf8;
+  --surface-secondary: #f7f4ed;
+  --surface-tertiary: var(--brand-cream);
+  --surface-hover: #f1ead8;
+  --surface-active: #e8dfca;
+  --surface-selected: #e2f0ec;
+
+  --primary: #3e6964;
+  --primary-hover: #315650;
+  --primary-active: #294943;
+  --primary-light: #cfe4df;
+  --primary-subtle: #e9f4f1;
+  --primary-strong: #294943;
+  --on-primary: #fffdf8;
+
+  --text-primary: #172630;
+  --text-secondary: #4d5e64;
+  --text-tertiary: #6d7c80;
+  --text-muted: var(--text-tertiary);
+  --text-disabled: #9aa5a5;
+  --text-brand: #3e6964;
+  --text-link: #315f59;
+  --text-link-hover: #294943;
+  --text-inverse: #fffdf8;
+
+  --border: #ded8ca;
+  --border-hover: #a7bdb7;
+  --border-active: var(--brand-green);
+  --border-strong: #a8a093;
+
+  --input-background: #fffdf8;
+  --input-border: #b9b4a8;
+  --input-border-hover: #6f9992;
+  --input-border-focus: var(--brand-green);
+
+  --nav-background: #fffdf8;
+  --nav-text: var(--brand-navy);
+  --nav-hover-background: #e9f4f1;
+  --nav-hover-text: #315f59;
+  --nav-active-background: #cfe4df;
+  --nav-active-text: #294943;
+
+  --sidebar-background: #fffdf8;
+  --sidebar-border: #ded8ca;
+  --sidebar-item-hover: #e9f4f1;
+  --sidebar-item-active: #cfe4df;
+  --sidebar-item-active-text: #294943;
+
+  --button-primary-background: var(--primary);
+  --button-primary-hover: var(--primary-hover);
+  --button-primary-active: var(--primary-active);
+  --button-primary-text: #fffdf8;
+  --button-secondary-background: var(--brand-navy);
+  --button-secondary-hover: #243b49;
+  --button-secondary-active: #1c303d;
+  --button-secondary-subtle: #e7eef0;
+  --button-secondary-light: #d5e1e5;
+  --button-secondary-text: #fffdf8;
+  --button-accent-background: var(--brand-gold);
+  --button-accent-hover: #957519;
+  --button-accent-active: #765d14;
+  --button-accent-subtle: #fbf2d9;
+  --button-accent-light: #f4e4ae;
+  --button-accent-text: #172630;
+  --button-on-solid: #fffdf8;
+
+  --table-header-background: var(--brand-cream);
+  --table-row-hover: #f7f4ed;
+  --table-row-selected: #e9f4f1;
+  --focus-ring: var(--brand-green);
+  --selection-background: var(--primary);
+  --selection-text: #fffdf8;
+  --overlay-background: rgb(23 38 48 / 60%);
+
+  --alert-primary: #315f59;
+  --alert-primary-subtle: #e9f4f1;
+  --alert-primary-light: #cfe4df;
+  --alert-primary-on-color: #fffdf8;
+  --alert-success: #277358;
+  --alert-success-subtle: #e5f3ec;
+  --alert-success-light: #cbe7da;
+  --alert-success-on-color: #fffdf8;
+  --alert-warning: #8b6510;
+  --alert-warning-subtle: #fbf2d9;
+  --alert-warning-light: #f4e4ae;
+  --alert-warning-on-color: #fffdf8;
+  --alert-danger: #a22b2b;
+  --alert-danger-subtle: #fde9e5;
+  --alert-danger-light: #f8ccc4;
+  --alert-danger-on-color: #fffdf8;
+  --alert-info: #2f5d77;
+  --alert-info-subtle: #e8f1f7;
+  --alert-info-light: #cfe2ee;
+  --alert-info-on-color: #fffdf8;
+  --alert-on-solid: #fffdf8;
+
+  --badge-neutral-background: #f1eee6;
+  --badge-neutral-border: #ded8ca;
+  --badge-neutral-text: #4d5e64;
+  --badge-neutral-on-color: #fffdf8;
+  --badge-primary-background: #e9f4f1;
+  --badge-primary-border: #c2ddd7;
+  --badge-primary-text: #315f59;
+  --badge-primary-on-color: #fffdf8;
+  --badge-success-background: #e5f3ec;
+  --badge-success-border: #cbe7da;
+  --badge-success-text: #277358;
+  --badge-success-on-color: #fffdf8;
+  --badge-warning-background: #fbf2d9;
+  --badge-warning-border: #f4e4ae;
+  --badge-warning-text: #805d0c;
+  --badge-warning-on-color: #fffdf8;
+  --badge-danger-background: #fde9e5;
+  --badge-danger-border: #f8ccc4;
+  --badge-danger-text: #a22b2b;
+  --badge-danger-on-color: #fffdf8;
+  --badge-info-background: #e8f1f7;
+  --badge-info-border: #cfe2ee;
+  --badge-info-text: #2f5d77;
+  --badge-info-on-color: #fffdf8;
+
+  --slate-50: #fffdf8;
+  --slate-100: #f7f4ed;
+  --slate-200: #e8dfca;
+  --slate-700: #4d5e64;
+  --slate-800: var(--brand-navy);
+  --slate-900: #172630;
+
+  --shadow-xs: 0 1px 2px rgb(23 38 48 / 6%);
+  --shadow-sm: 0 2px 6px rgb(23 38 48 / 8%);
+  --shadow-md: 0 8px 16px rgb(23 38 48 / 10%);
+  --shadow-lg: 0 16px 24px rgb(23 38 48 / 12%);
+  --shadow-xl: 0 24px 36px rgb(23 38 48 / 14%);
+}
