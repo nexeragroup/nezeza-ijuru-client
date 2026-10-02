@@ -116,7 +116,6 @@ export class ThemeService {
       return;
     }
     this.modeState.set(mode);
-    this.persistMode(mode);
     this.applyTheme();
   }
 
@@ -162,7 +161,6 @@ export class ThemeService {
     this.colorState.set(color);
     this.modeState.set(mode);
     this.persistColor(color);
-    this.persistMode(mode);
     /**
      * Apply once instead of applying after
      * each individual change.
@@ -195,12 +193,11 @@ export class ThemeService {
       area: 'local',
       validate: isThemeColor,
     });
-    const mode = this.storage.get<ThemeMode>(STORAGE_KEYS.mode, {
+    this.storage.remove(STORAGE_KEYS.mode, {
       area: 'local',
-      validate: isThemeMode,
     });
     this.colorState.set(color ?? this.config.defaultColor);
-    this.modeState.set(mode ?? this.config.defaultMode);
+    this.modeState.set(this.config.defaultMode);
   }
 
   // ===========================================================================
@@ -208,12 +205,6 @@ export class ThemeService {
   // ===========================================================================
   private persistColor(color: ThemeColor): void {
     this.storage.set(STORAGE_KEYS.color, color, {
-      area: 'local',
-    });
-  }
-
-  private persistMode(mode: ThemeMode): void {
-    this.storage.set(STORAGE_KEYS.mode, mode, {
       area: 'local',
     });
   }

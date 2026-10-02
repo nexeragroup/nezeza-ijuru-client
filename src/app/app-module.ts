@@ -36,7 +36,7 @@ import { LayoutModule } from './layout/layout.module';
 
       theme: {
         defaultColor: 'default',
-        defaultMode: 'system',
+        defaultMode: 'light',
       },
     }),
     SharedModule,

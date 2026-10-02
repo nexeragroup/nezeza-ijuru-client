@@ -9,6 +9,6 @@ export interface ThemeConfig {
 export const THEME_CONFIG = new InjectionToken<ThemeConfig>('THEME_CONFIG', {
   factory: () => ({
     defaultColor: 'default',
-    defaultMode: 'system',
+    defaultMode: 'light',
   }),
 });
