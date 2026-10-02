@@ -14,6 +14,10 @@ const angularApp = new AngularNodeAppEngine();
 
 // API traffic belongs to the backend/reverse proxy, never Angular's HTML fallback.
 app.disable('x-powered-by');
+app.get('/healthz', (_req, res) => {
+  res.status(200).set('Cache-Control', 'no-store').type('text/plain').send('ok');
+});
+
 app.use('/api', (_req, res) => {
   res.status(404).set('Cache-Control', 'no-store').json({
     error: 'api_route_not_configured',

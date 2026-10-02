@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test:
-        ["CMD", "node", "-e", "require('node:http').get({host:'127.0.0.1',port:4200,path:'/',headers:{host:'nezezaijuru.org'}},(response)=>{response.resume();process.exit(response.statusCode===200?0:1)}).on('error',()=>process.exit(1))"]
+        ["CMD", "node", "-e", "require('node:http').get({host:'127.0.0.1',port:4200,path:'/healthz',headers:{host:'nezezaijuru.org'}},(response)=>{const ok=response.statusCode===200;response.resume();response.on('end',()=>process.exit(ok?0:1))}).on('error',()=>process.exit(1))"]
       interval: 30s
       timeout: 5s
       retries: 3

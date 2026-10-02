@@ -58,4 +58,4 @@ jobs:
       - name: Verify web health
         run: |
           ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
-            "for attempt in \$(seq 1 12); do curl --fail --silent --show-error --resolve nezezaijuru.org:443:127.0.0.1 https://nezezaijuru.org/ && exit 0; sleep 5; done; docker logs --tail=100 nezeza-ijuru-web-prod; exit 1"
+            "for attempt in \$(seq 1 12); do curl --fail --silent --show-error --resolve nezezaijuru.org:443:127.0.0.1 https://nezezaijuru.org/healthz && exit 0; sleep 5; done; docker logs --tail=100 nezeza-ijuru-web-prod; exit 1"
