@@ -53,7 +53,7 @@ jobs:
       - name: Build and run web service
         run: |
           ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_ROOT/web' && docker compose --env-file deploy/.env.prod -f deploy/compose.prod.yml up -d --build --remove-orphans"
+            "cd '$DEPLOY_ROOT/web' && docker compose --env-file deploy/.env.prod -f deploy/compose.prod.yml up -d --build"
 
       - name: Verify web health
         run: |
