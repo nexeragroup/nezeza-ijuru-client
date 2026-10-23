@@ -30,6 +30,8 @@ export interface ProgramConference {
   programId: string;
   conferenceSummary: string | null;
   isFeatured: boolean;
+  startDate: string | null;
+  endDate: string | null;
   conference?: {
     id: string;
     year: number;

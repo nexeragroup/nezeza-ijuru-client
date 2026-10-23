@@ -27,7 +27,7 @@
     <section class="program-overview">
       <div class="container overview-grid">
         <div><p class="eyebrow">About this program</p><h2>Part of {{ item.conference.title }}</h2><p>{{ item.conferenceProgram.conferenceSummary || item.conferenceProgram.program.description || 'More information about this program will be added soon.' }}</p></div>
-        <dl><div><dt>Conference</dt><dd>{{ item.conference.title }}</dd></div><div><dt>Theme</dt><dd>{{ item.conference.theme }}</dd></div><div><dt>Dates</dt><dd>{{ item.conference.startDate ? (item.conference.startDate | date: 'mediumDate') : 'To be announced' }} – {{ item.conference.endDate ? (item.conference.endDate | date: 'mediumDate') : 'To be announced' }}</dd></div><div><dt>Events</dt><dd>{{ item.conferenceProgram.events?.length || 0 }}</dd></div></dl>
+        <dl><div><dt>Conference</dt><dd>{{ item.conference.title }}</dd></div><div><dt>Theme</dt><dd>{{ item.conference.theme }}</dd></div><div><dt>Program dates</dt><dd>{{ item.conferenceProgram.startDate ? (item.conferenceProgram.startDate | date: 'mediumDate') : 'To be announced' }} – {{ item.conferenceProgram.endDate ? (item.conferenceProgram.endDate | date: 'mediumDate') : 'To be announced' }}</dd></div><div><dt>Main conference dates</dt><dd>{{ item.conference.startDate | date: 'mediumDate' }} – {{ item.conference.endDate | date: 'mediumDate' }}</dd></div><div><dt>Events</dt><dd>{{ item.conferenceProgram.events?.length || 0 }}</dd></div></dl>
       </div>
     </section>
 

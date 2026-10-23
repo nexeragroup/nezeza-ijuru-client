@@ -22,6 +22,8 @@ export interface ConferenceProgram {
   programId: string;
   conferenceSummary: string | null;
   isFeatured: boolean;
+  startDate: string | null;
+  endDate: string | null;
   displayOrder: number;
   program: {
     id: string;
