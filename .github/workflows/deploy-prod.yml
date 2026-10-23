@@ -2,7 +2,7 @@ name: Deploy web prod
 
 on:
   push:
-    branches: [prod]
+    branches: [production]
   workflow_dispatch:
 
 permissions:
