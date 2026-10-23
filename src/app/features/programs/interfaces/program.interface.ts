@@ -5,8 +5,23 @@ export interface Program {
   summary: string | null;
   description: string | null;
   featuredMediaId: string | null;
+  featuredMedia?: ProgramMedia | null;
   publicationStatus: string;
   conferences?: ProgramConference[];
+}
+
+export interface ProgramMedia {
+  id: string;
+  targetType: 'PROGRAM';
+  targetId: string;
+  sourceType: 'UPLOAD' | 'EXTERNAL';
+  mediaType: 'IMAGE' | 'VIDEO' | 'PODCAST' | 'AUDIO' | 'DOCUMENT' | 'OTHER';
+  title: string;
+  caption: string | null;
+  altText: string | null;
+  url: string;
+  durationSeconds: number | null;
+  isFeatured: boolean;
 }
 
 export interface ProgramConference {

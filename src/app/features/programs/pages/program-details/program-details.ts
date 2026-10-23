@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, RESPONSE_INIT, inject, signal } from '@a
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { Program } from '../../interfaces/program.interface';
-import { programPresentation } from '../../programs-content';
+import { programImage, programPresentation } from '../../programs-content';
 import { ProgramsService } from '../../services/programs.service';
 import { SeoService } from '../../../../core';
 
@@ -56,7 +56,7 @@ export class ProgramDetails implements OnInit {
         const view = {
           ...program,
           headline: presentation.headline,
-          image: presentation.image,
+          image: programImage(program),
           steps: presentation.steps,
         } satisfies ProgramView;
         this.program.set(view);

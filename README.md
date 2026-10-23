@@ -1,59 +1,148 @@
-# Client
+# Nezeza Ijuru Client
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Client is the public, server-rendered Angular website for Nezeza Ijuru. It presents the ministry, programmes, conferences, media, giving, and contact journeys, and consumes the public API surface exposed by [`../server`](../server).
 
-## Development server
+## What it provides
 
-To start a local development server, run:
+- Public home, about, giving, contact, programme, conference, and media experiences
+- Conference-programme detail pages and published media/livestream views
+- Server-side rendering (SSR) for fast first render and discoverable public pages
+- Environment-specific SEO assets and metadata
+- A same-origin development API proxy
 
-```bash
-ng serve
-```
+## Prerequisites
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js `>=24.15.0 <25` (enforced by `package.json` and the Docker image)
+- pnpm 12.3.4
+- A running NestJS API, normally `../server`, on `http://localhost:3300`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+If pnpm is unavailable:
 
 ```bash
-ng generate --help
+corepack enable
+corepack prepare pnpm@12.3.4 --activate
 ```
 
-## Building
+## Local development
 
-To build the project run:
+Run the API first:
 
 ```bash
-ng build
+cd ../server
+pnpm install --frozen-lockfile
+pnpm run start:dev
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Then run the client:
 
 ```bash
-ng test
+cd ../client
+pnpm install --frozen-lockfile
+pnpm run start:dev
 ```
 
-## Running end-to-end tests
+Visit `http://localhost:4200`. Browser requests to `/api/v1/*` are forwarded to the local API by `proxy/proxy.dev.mjs`.
 
-For end-to-end (e2e) testing, run:
+If Control is also running, choose a separate port for one app:
 
 ```bash
-ng e2e
+pnpm ng serve --configuration dev --port 4300
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Configuration
 
-## Additional Resources
+The application deliberately separates public build-time configuration from development proxy configuration.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Location | Purpose | Keep secret? |
+| --- | --- | --- |
+| `src/environments/environment.*.ts` | Site URL, API base URL, indexing behavior | No—these values are bundled for browsers. |
+| `.env.dev`, `.env.staging`, `.env.prod` | CLI proxy target and timeout settings | No secrets; proxy destination is operational configuration. |
+| Server environment files | Authentication, database, storage, mail, and server CORS | Yes—manage through the deployment secret store. |
+
+For development, keep the client API base URL as `/api/v1` and set the proxy target as an origin only:
+
+```dotenv
+API_PROXY_TARGET=http://localhost:3300
+```
+
+For staging and production, keep `siteUrl`, `apiBaseUrl`, the server's `APP_URL`, and `CORS_ORIGIN` aligned to the same environment. Do not point a production browser build at a different brand, domain, or deployment tier.
+
+## Architecture
+
+```text
+src/app/
+├── core/       HTTP client, auth/session, state, interceptors, SEO, theme
+├── layout/     public shell, header, and footer
+├── shared/     reusable controls and feedback components
+└── features/   lazily loaded public routes and page-specific services
+```
+
+SSR begins at `src/server.ts`. The Angular build produces both browser and server bundles under `dist/client/<configuration>/ssr/`.
+
+## Commands
+
+```bash
+# Local development
+pnpm run start:dev
+
+# Development SSR build and server
+pnpm run build:dev:ssr
+pnpm run serve:dev:ssr
+
+# Staging SSR build and server
+pnpm run build:staging:ssr
+pnpm run serve:staging:ssr
+
+# Production SSR build and server
+pnpm run build:prod:ssr
+pnpm run serve:prod:ssr
+
+# Unit tests
+pnpm run test
+
+# Proxy checks
+pnpm run test:proxy
+pnpm run test:proxy:integration
+```
+
+## Container build
+
+The supplied Dockerfile creates an SSR runtime image. Build the desired configuration explicitly:
+
+```bash
+docker build --build-arg BUILD_CONFIGURATION=prod -t nezeza-client:prod .
+docker run --rm -p 4200:4200 nezeza-client:prod
+```
+
+`BUILD_CONFIGURATION` may be `dev`, `staging`, or `prod`. Pass runtime configuration through the hosting platform; do not bake secrets into the image.
+
+## Security and reliability
+
+- Public environment files must never contain credentials or private endpoints.
+- The API client rejects arbitrary absolute API paths; feature services should stay on the configured API base URL.
+- For cookie-based sessions, preserve a same-origin proxy where possible. A cross-origin deployment needs credentialed CORS plus a tested CSRF-token exchange.
+- Production deployments should terminate TLS before public traffic reaches the SSR process.
+- The `ng serve` development warning is expected and does not describe a production-capable web server.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Browser API requests fail locally | Confirm `../server` is running on port 3300 and `API_PROXY_TARGET` is an origin without `/api/v1`. |
+| SSR server cannot find output | Build the same configuration you are serving, then use the matching `serve:*:ssr` command. |
+| CORS or CSRF failure in a deployed build | Compare the client `apiBaseUrl` to server `APP_URL`, `CORS_ORIGIN`, cookie policy, and reverse-proxy host. |
+| SEO files look wrong per environment | Check the selected Angular build configuration and matching `src/seo/<environment>/` assets. |
+| `pnpm` fails before scripts run | Repair Corepack and activate pnpm 12.3.4. |
+
+## Delivery checklist
+
+Before merging or deploying:
+
+```bash
+pnpm run build:prod
+pnpm run test
+pnpm run test:proxy
+pnpm run test:proxy:integration
+```
+
+Verify one rendered public route and one API-backed route against the intended environment before promoting the image.

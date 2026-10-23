@@ -49,6 +49,6 @@ export function programPresentation(slug: string): ProgramPresentation {
   return PRESENTATIONS[slug] ?? DEFAULT_PRESENTATION;
 }
 
-export function programImage(program: Pick<Program, 'slug'>): string {
-  return programPresentation(program.slug).image;
+export function programImage(program: Pick<Program, 'slug' | 'featuredMedia'>): string {
+  return program.featuredMedia?.url ?? programPresentation(program.slug).image;
 }

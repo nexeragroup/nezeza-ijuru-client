@@ -26,13 +26,11 @@
         <button type="button" (click)="nextSlide()" aria-label="Next program"><i class="fa-solid fa-arrow-right"
             aria-hidden="true"></i></button>
       </div>
-      <button
-        type="button"
-        class="hero-carousel-pause"
+      <button type="button" class="hero-carousel-pause"
         [attr.aria-label]="carouselPaused() ? 'Play program carousel' : 'Pause program carousel'"
-        (click)="toggleCarousel()"
-      >
-        <i class="fa-solid" [class.fa-play]="carouselPaused()" [class.fa-pause]="!carouselPaused()" aria-hidden="true"></i>
+        (click)="toggleCarousel()">
+        <i class="fa-solid" [class.fa-play]="carouselPaused()" [class.fa-pause]="!carouselPaused()"
+          aria-hidden="true"></i>
       </button>
       <div class="hero-carousel-dots" aria-label="Choose a program slide">
         @for (slide of heroSlides; track slide.eyebrow; let index = $index) {
@@ -108,7 +106,8 @@
         <h2 id="conference-title">{{ conference.title }}</h2>
         @if (conference.summary) { <p>{{ conference.summary }}</p> }
         <div class="action-row">
-          <a class="action-link action-link-cream" [routerLink]="['/conferences', conference.slug]">Explore the conference
+          <a class="action-link action-link-cream" [routerLink]="['/conferences', conference.slug]">Explore the
+            conference
             <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
         </div>
       </div>
@@ -165,7 +164,8 @@
       <div class="program-grid">
         @for (program of programs(); track program.id; let index = $index) {
         <a class="program-card" [routerLink]="['/programs', program.slug]">
-          <img [src]="programImage(program)" [alt]="program.name" loading="lazy" decoding="async" />
+          <img [src]="programImage(program)" [alt]="program.featuredMedia?.altText || program.name" loading="lazy"
+            decoding="async" />
 
           <span class="program-number" aria-hidden="true">
             0{{ index + 1 }}

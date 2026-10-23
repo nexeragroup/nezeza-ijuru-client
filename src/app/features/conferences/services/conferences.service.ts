@@ -18,7 +18,7 @@ export class ConferencesService {
 
   getAll(): Observable<Conference[]> {
     return this.api
-      .get<Conference[]>('/conferences/all')
+      .get<Conference[]>('/conferences/all/published')
       .pipe(map((conferences) => conferences.map((conference) => this.normalizeConference(conference))));
   }
 
@@ -72,6 +72,7 @@ export class ConferencesService {
     return {
       ...conference,
       programs: (conference.programs ?? []).map((program) => this.normalizeProgram(program)),
+      featuredMedia: conference.featuredMedia ?? null,
       media: conference.media ?? [],
     };
   }

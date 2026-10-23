@@ -67,8 +67,8 @@ export class ConferencesList implements OnInit {
     return `${number}${suffix} conference`;
   }
 
-  conferenceImage(index: number): string {
-    return this.fallbackImages[index % this.fallbackImages.length];
+  conferenceImage(conference: Conference, index: number): string {
+    return conference.featuredMedia?.url ?? this.fallbackImages[index % this.fallbackImages.length];
   }
 
   selectConference(conference: Conference): void {

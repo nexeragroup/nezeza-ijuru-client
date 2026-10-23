@@ -30,7 +30,7 @@
       <section class="next-conference">
         <div class="container next-grid">
           <div class="next-image">
-            <img [src]="conferenceImage(0)" [alt]="current.title + ' conference'" />
+            <img [src]="conferenceImage(current, 0)" [alt]="current.featuredMedia?.altText || current.title + ' conference'" />
             <span>{{ current.year }}</span>
           </div>
           <div class="next-copy">
@@ -62,7 +62,7 @@
         <div class="conference-grid">
           @for (conference of archivedConferences(); track conference.id; let index = $index) {
             <a class="conference-card" [routerLink]="['/conferences', conference.slug]" (click)="selectConference(conference)">
-              <img [src]="conferenceImage(index + 1)" [alt]="conference.title + ' conference'" loading="lazy" />
+              <img [src]="conferenceImage(conference, index + 1)" [alt]="conference.featuredMedia?.altText || conference.title + ' conference'" loading="lazy" />
               <app-badge class="card-status" color="success" appearance="solid" size="small">Published</app-badge>
               <div class="card-copy">
                 <div><p>{{ conferenceNumber(conference) }}</p><strong>{{ conference.year }}</strong></div>

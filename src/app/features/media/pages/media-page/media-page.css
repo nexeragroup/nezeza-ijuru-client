@@ -7,6 +7,7 @@
   margin-inline: auto;
   padding-block: clamp(1.5rem, 3vw, 3rem);
   color: var(--text-primary);
+  /* background: var(--brand-cream); */
 }
 
 .media-hero {
@@ -40,7 +41,7 @@
   line-height: 0.94;
 }
 
-.media-hero-copy > p:not(.eyebrow) {
+.media-hero-copy>p:not(.eyebrow) {
   max-width: 38rem;
   margin-top: 1.35rem;
   color: rgb(249 242 214 / 76%);
@@ -81,7 +82,7 @@
   color: var(--brand-navy);
 }
 
-.hero-actions > span {
+.hero-actions>span {
   color: rgb(249 242 214 / 58%);
   font-size: 0.78rem;
 }
@@ -139,7 +140,7 @@
   text-align: center;
 }
 
-.media-state > i {
+.media-state>i {
   color: var(--brand-green);
   font-size: 2rem;
 }
@@ -234,18 +235,18 @@
   background: var(--surface);
 }
 
-.skeleton-card > span,
+.skeleton-card>span,
 .skeleton-card i {
   display: block;
   background: color-mix(in srgb, var(--text-primary) 10%, transparent);
   animation: media-pulse 1.4s ease-in-out infinite;
 }
 
-.skeleton-card > span {
+.skeleton-card>span {
   aspect-ratio: 16 / 9;
 }
 
-.skeleton-card > div {
+.skeleton-card>div {
   display: grid;
   gap: 0.65rem;
   padding: 1rem;

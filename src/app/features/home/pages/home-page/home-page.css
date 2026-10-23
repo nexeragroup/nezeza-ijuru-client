@@ -407,7 +407,7 @@ h2 {
 }
 
 .program-card-copy {
-  min-height: 11rem;
+  min-height: 0rem;
   padding: 1.35rem;
 }
 

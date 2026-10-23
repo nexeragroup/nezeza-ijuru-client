@@ -16,7 +16,14 @@
       </div>
     </section>
   } @else if (conference(); as item) {
-    <section class="conference-hero">
+    <section class="conference-hero" [class.conference-hero--with-image]="!!item.featuredMedia">
+      @if (item.featuredMedia; as featuredMedia) {
+        <img
+          class="conference-hero__image"
+          [src]="featuredMedia.url"
+          [alt]="featuredMedia.altText || item.title + ' conference'"
+        />
+      }
       <div class="container">
         <a routerLink="/conferences"
           ><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> All conferences</a

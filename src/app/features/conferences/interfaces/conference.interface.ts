@@ -11,8 +11,9 @@ export interface Conference {
   isCurrent: boolean;
   publicationStatus: 'PUBLISHED';
   featuredMediaId: string | null;
+  featuredMedia?: ConferenceMedia | null;
   programs?: ConferenceProgram[];
-  media?: ConferenceProgramMedia[];
+  media?: ConferenceMedia[];
 }
 
 export interface ConferenceProgram {
@@ -84,9 +85,9 @@ export interface ConferenceVenue {
   instructions?: string | null;
 }
 
-export interface ConferenceProgramMedia {
+export interface ConferenceMedia {
   id: string;
-  targetType: 'CONFERENCE_PROGRAM' | 'EVENT' | 'SESSION';
+  targetType: 'CONFERENCE' | 'CONFERENCE_PROGRAM' | 'EVENT' | 'SESSION';
   targetId: string;
   sourceType: 'UPLOAD' | 'EXTERNAL';
   mediaType: 'IMAGE' | 'VIDEO' | 'PODCAST' | 'AUDIO' | 'DOCUMENT' | 'OTHER';
@@ -97,6 +98,8 @@ export interface ConferenceProgramMedia {
   durationSeconds: number | null;
   isFeatured: boolean;
 }
+
+export type ConferenceProgramMedia = ConferenceMedia;
 
 export interface ConferenceProgramDetails {
   conference: Conference;

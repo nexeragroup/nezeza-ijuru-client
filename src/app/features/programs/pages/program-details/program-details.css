@@ -125,6 +125,7 @@
 
 .program-detail-content {
   padding-block: clamp(4rem, 8vw, 7rem);
+  background: var(--brand-cream);
 }
 
 .detail-grid {

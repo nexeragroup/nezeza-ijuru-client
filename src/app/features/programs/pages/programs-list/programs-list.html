@@ -39,7 +39,7 @@
       @for (program of programs(); track program.id; let index = $index) {
         <a class="program" [routerLink]="['/programs', program.slug]">
           <div class="image">
-            <img [src]="image(program)" [alt]="program.name" loading="lazy" decoding="async" />
+            <img [src]="image(program)" [alt]="program.featuredMedia?.altText || program.name" loading="lazy" decoding="async" />
             <span aria-hidden="true">{{ (index + 1).toString().padStart(2, '0') }}</span>
           </div>
           <div class="copy">

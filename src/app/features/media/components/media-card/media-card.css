@@ -28,9 +28,9 @@
   background: var(--brand-navy);
 }
 
-.media-preview > img,
-.media-preview > video,
-.media-preview > iframe {
+.media-preview>img,
+.media-preview>video,
+.media-preview>iframe {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 10;

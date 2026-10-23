@@ -46,6 +46,7 @@
 
 .program-list {
   padding-block: clamp(2rem, 4vw, 5rem);
+  background: var(--brand-cream);
 }
 
 .program-state {
