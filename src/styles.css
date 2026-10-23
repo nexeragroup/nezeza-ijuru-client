@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global style entry point. Keep imports before declarations.
+   Component styles remain free to override these foundation styles. */
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+@import "./styles/tokens/colors.css";
+@import "./styles/tokens/typography.css";
+@import "./styles/tokens/spacing.css";
+@import "./styles/tokens/borders.css";
+@import "./styles/tokens/shadows.css";
+@import "./styles/tokens/motion.css";
+@import "./styles/tokens/z-index.css";
+@import "./styles/themes/default/light.css";
+@import "./styles/themes/default/dark.css";
+@import "./styles/base/reset.css";
+@import "./styles/base/root.css";
+@import "./styles/base/base.css";
+@import "./styles/layout/layout.css";
+@import "./styles/responsive/media.css";
+@import "./styles/utilities/utilities.css";
+@import "./styles/base/accessibility.css";

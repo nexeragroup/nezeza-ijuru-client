@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Breakpoints
+
+   xs: <576
+   sm: 576+
+   md: 768+
+   lg: 992+
+   xl: 1200+
+   2xl: 1440+
+   ========================================================================== */
+
+
+/* Tablet */
+
+@media (min-width: 48rem) {
+  .page {
+    padding:
+      var(--page-padding-tablet);
+  }
+}
+
+
+/* Desktop */
+
+@media (min-width: 62rem) {
+  .page {
+    padding:
+      var(--page-padding-desktop);
+  }
+}
+
+
+/* Large desktop */
+
+@media (min-width: 75rem) {
+  .container {
+    padding-inline:
+      var(--space-4);
+  }
+}
+
+
+/* Small/mobile screens */
+
+@media (max-width: 35.999rem) {
+  .mobile-hidden {
+    display: none !important;
+  }
+}
+
+
+/* Tablet and below */
+
+@media (max-width: 61.999rem) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+
+/* Desktop */
+
+@media (min-width: 62rem) {
+  .desktop-hidden {
+    display: none !important;
+  }
+}

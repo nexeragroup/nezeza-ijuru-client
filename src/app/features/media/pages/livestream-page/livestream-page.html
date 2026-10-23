@@ -1,0 +1,15 @@
+<section class="livestream-page" [class.embedded]="embedded">
+  @if (!embedded) { <header><p class="eyebrow">NEZEZA IJURU · WATCH TOGETHER</p><h1>Livestream</h1><p>Watch our current live broadcast here.</p></header> }
+  @if (loading()) { <p class="state" role="status">Loading broadcasts…</p> }
+  @if (error()) { <div class="notice" role="alert">We couldn’t check the latest broadcast status. <app-button color="primary" appearance="link" size="small" (buttonClick)="refresh()">Try again</app-button></div> }
+  @if (selected(); as stream) {
+    <div class="watch-layout">
+      <article class="broadcast">
+        <div class="broadcast-heading"><span class="status live" aria-live="polite">Live now</span><h2>{{ stream.title }}</h2></div>
+        @if (embed(); as embedUrl) { <iframe [src]="embedUrl" [title]="stream.title" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> } @else { <div class="player-fallback">This video cannot be played here. Open it on YouTube to check availability.</div> }
+        <div class="broadcast-info"><a [href]="stream.url" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a></div>
+      </article>
+      <aside aria-label="Available broadcasts"><h2>Broadcasts</h2>@for (item of streams(); track item.sessionId) { <button type="button" class="stream-option" [class.selected]="item.sessionId === stream.sessionId" [attr.aria-pressed]="item.sessionId === stream.sessionId" (click)="select(item)"><span class="status" >Live now</span><strong>{{ item.title }}</strong><small>{{ item.startAt | date:'mediumDate' }}</small></button> }</aside>
+    </div>
+  } @else if (!loading() && !error()) { <div class="empty" role="status"><h2>No live stream right now</h2><p>Our next live stream will appear here when it starts.</p><a routerLink="/conferences">Explore conferences →</a></div> }
+</section>

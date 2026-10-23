@@ -1,0 +1,39 @@
+<ng-template #content>
+  @if (loading) {
+  <app-loader size="small" [label]="loadingLabel" />
+  }
+
+  @if (prefixIcon) {
+  <i [class]="prefixIcon" aria-hidden="true"></i>
+  }
+
+  <span class="button__content">
+    <ng-content />
+  </span>
+
+  @if (suffixIcon) {
+  <i [class]="suffixIcon" aria-hidden="true"></i>
+  }
+</ng-template>
+
+@if (href) {
+<a [class]="classes" [href]="href" [target]="target ?? null" [attr.rel]="linkRel"
+  [attr.name]="name ?? null" [attr.aria-label]="ariaLabel ?? null"
+  [attr.aria-disabled]="interactionDisabled ? 'true' : null" [attr.aria-busy]="loading ? 'true' : null"
+  [attr.tabindex]="interactionDisabled ? '-1' : null" (click)="handleClick($event)">
+  <ng-container [ngTemplateOutlet]="content" />
+</a>
+} @else if (route) {
+<a [class]="classes" [routerLink]="route" [attr.name]="name ?? null" [attr.aria-label]="ariaLabel ?? null"
+  [attr.aria-disabled]="interactionDisabled ? 'true' : null" [attr.aria-busy]="loading ? 'true' : null"
+  [attr.tabindex]="interactionDisabled ? '-1' : null" (click)="handleClick($event)">
+  <ng-container [ngTemplateOutlet]="content" />
+</a>
+} @else {
+<button [class]="classes" [type]="type" [disabled]="interactionDisabled" [attr.name]="name ?? null"
+  [attr.value]="value ?? null" [attr.aria-label]="ariaLabel ?? null"
+  [attr.aria-disabled]="interactionDisabled ? 'true' : null" [attr.aria-busy]="loading ? 'true' : null"
+  [attr.autofocus]="autofocus ? '' : null" (click)="handleClick($event)">
+  <ng-container [ngTemplateOutlet]="content" />
+</button>
+}

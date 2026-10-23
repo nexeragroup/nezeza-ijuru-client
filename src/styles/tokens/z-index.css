@@ -1,0 +1,13 @@
+:root {
+  --z-base: 0;
+  --z-content: 10;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-dropdown: 300;
+  --z-overlay: 400;
+  --z-drawer: 500;
+  --z-modal: 600;
+  --z-popover: 700;
+  --z-toast: 800;
+  --z-tooltip: 900;
+}

@@ -1,0 +1,149 @@
+<main class="contact-page">
+  <header>
+    <div class="container">
+      <p class="eyebrow">Contact Nezeza Ijuru</p>
+
+      <h1>We would love to hear from you.</h1>
+
+      <p>
+        Whether you want to attend an upcoming gathering, serve with the
+        mission, support an outreach, partner with us, share a testimony,
+        or simply learn more about Nezeza Ijuru, our team is ready to
+        connect with you.
+      </p>
+    </div>
+  </header>
+
+  <section class="contact">
+    <div class="container contact-grid">
+
+      <aside>
+        <p class="eyebrow">Reach the team</p>
+
+        <h2>Connect with Nezeza Ijuru.</h2>
+
+        <p class="contact-intro">
+          Nezeza Ijuru is carried from Zion Temple Kimironko in Kigali.
+          Reach out to our team for information about programs, upcoming
+          activities, participation, partnerships, or support.
+        </p>
+
+        <div class="details">
+          <a href="mailto:info&#64;nezezaijuru.org">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+
+            <span>
+              <small>Email</small>
+              info&#64;nezezaijuru.org
+            </span>
+          </a>
+
+          <a href="tel:+250788319899">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+
+            <span>
+              <small>Call</small>
+              +250 788 319 899
+            </span>
+          </a>
+
+          <div>
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+
+            <span>
+              <small>Visit</small>
+              Zion Temple Kimironko<br>
+              Gasabo, Kigali, Rwanda
+            </span>
+          </div>
+        </div>
+
+        <p class="note">
+          For time-sensitive questions about an upcoming Nezeza Ijuru
+          activity, calling the team may be the quickest way to reach us.
+        </p>
+      </aside>
+
+      <form action="mailto:info&#64;nezezaijuru.org" method="post" enctype="text/plain" (submit)="announceEmailClient()">
+        <div class="form-title">
+          <p class="eyebrow">Send us a message</p>
+
+          <h2>How would you like to connect?</h2>
+          <p class="form-note">Submitting this form opens your email app with your message ready to send.</p>
+        </div>
+
+        <div class="two">
+          <app-input inputId="contact-first-name" name="firstName" label="First name" autocomplete="given-name" required />
+
+          <app-input inputId="contact-last-name" name="lastName" label="Last name" autocomplete="family-name" required />
+        </div>
+
+        <app-input inputId="contact-email" name="email" label="Email address" type="email" autocomplete="email" required />
+
+        <app-input inputId="contact-subject" name="subject" label="What would you like to talk about?"
+          type="select" placeholder="Choose a subject" [options]="subjectOptions" required />
+
+        <app-input inputId="contact-message" name="message" label="Your message" type="textarea" [rows]="6"
+          placeholder="Tell us how we can help..." required />
+
+        <app-input class="consent" inputId="contact-consent" name="consent" type="checkbox"
+          label="I agree that the Nezeza Ijuru team may use the information provided to respond to this message." required />
+
+        <app-button type="submit" color="primary" suffixIcon="fa-solid fa-paper-plane">
+          Send message
+        </app-button>
+      </form>
+
+    </div>
+  </section>
+
+  <section class="expect">
+    <div class="container">
+      <div class="expect-heading">
+        <p class="eyebrow">What happens next</p>
+
+        <h2>Your message reaches the right team.</h2>
+
+        <p>
+          We want every inquiry to reach the people best placed to respond.
+        </p>
+      </div>
+
+      <div class="expect-grid">
+        <article>
+          <strong>01</strong>
+
+          <h3>Send your message</h3>
+
+          <p>
+            Tell us whether you are interested in attending, serving,
+            supporting, partnering, sharing a testimony, or learning
+            more about the mission.
+          </p>
+        </article>
+
+        <article>
+          <strong>02</strong>
+
+          <h3>We connect you with the right team</h3>
+
+          <p>
+            Your inquiry is directed to the appropriate Nezeza Ijuru
+            coordination, program, or ministry team.
+          </p>
+        </article>
+
+        <article>
+          <strong>03</strong>
+
+          <h3>We follow up</h3>
+
+          <p>
+            A member of the team will use the contact details you
+            provided to continue the conversation.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>

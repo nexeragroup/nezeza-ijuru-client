@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "pnpm"
+    "packageManager": "pnpm",
+    "analytics": "c002aa6c-3cd6-4795-b03b-1e403228cacd"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -34,9 +35,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -47,7 +46,68 @@
             }
           },
           "configurations": {
-            "production": {
+            "dev": {
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": ["robots.txt", "sitemap.xml"]
+                },
+                {
+                  "glob": "robots.txt",
+                  "input": "src/seo/dev",
+                  "output": "/"
+                }
+              ],
+              "outputPath": {
+                "base": "dist/client/dev/ssr",
+                "browser": "browser",
+                "server": "server"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "security": {
+                "allowedHosts": ["localhost", "127.0.0.1", "0.0.0.0"]
+              }
+            },
+            "staging": {
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": ["robots.txt", "sitemap.xml"]
+                },
+                {
+                  "glob": "robots.txt",
+                  "input": "src/seo/staging",
+                  "output": "/"
+                }
+              ],
+              "outputPath": {
+                "base": "dist/client/staging/ssr",
+                "browser": "browser",
+                "server": "server"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "outputHashing": "all",
+              "security": {
+                "allowedHosts": ["staging.nezezaijuru.org"]
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -56,31 +116,68 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                }
+              ]
+            },
+            "prod": {
+              "outputPath": {
+                "base": "dist/client/prod/ssr",
+                "browser": "browser",
+                "server": "server"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
+              "optimization": true,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "outputHashing": "all",
+              "security": {
+                "allowedHosts": ["nezezaijuru.org"]
+              },
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                }
+              ]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "prod"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "client:build:production"
+            "dev": {
+              "buildTarget": "client:build:dev",
+              "proxyConfig": "proxy/proxy.dev.mjs",
+              "host": "0.0.0.0",
+              "port": 4200,
+              "allowedHosts": ["localhost", "127.0.0.1", "10.8.120.117"]
             },
-            "development": {
-              "buildTarget": "client:build:development"
+            "staging": {
+              "buildTarget": "client:build:staging",
+              "proxyConfig": "proxy/proxy.staging.mjs",
+              "allowedHosts": ["staging.nezezaijuru.org"]
+            },
+            "prod": {
+              "buildTarget": "client:build:prod",
+              "proxyConfig": "proxy/proxy.prod.mjs",
+              "allowedHosts": ["nezezaijuru.org"]
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "dev"
         },
         "test": {
           "builder": "@angular/build:unit-test"
