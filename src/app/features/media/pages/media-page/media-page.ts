@@ -4,7 +4,22 @@ import { Subscription } from 'rxjs';
 import { MediaPage as MediaResult } from '../../models/media.model';
 import { MediaService, MediaType } from '../../services/media.service';
 
-type MediaFilter = 'ALL' | 'IMAGE' | 'VIDEO' | 'RESOURCES';
+export type MediaFilter = 'ALL' | 'IMAGE' | 'VIDEO' | 'RESOURCES';
+
+const FILTER_MEDIA_TYPES: Readonly<
+  Record<Exclude<MediaFilter, 'ALL'>, readonly MediaType[]>
+> = {
+  IMAGE: ['IMAGE'],
+  VIDEO: ['VIDEO'],
+  RESOURCES: ['AUDIO', 'PODCAST', 'DOCUMENT', 'OTHER'],
+};
+
+export function matchesMediaFilter(
+  mediaType: MediaType,
+  filter: MediaFilter,
+): boolean {
+  return filter === 'ALL' || FILTER_MEDIA_TYPES[filter].includes(mediaType);
+}
 
 @Component({
   selector: 'app-media-page',
@@ -24,7 +39,11 @@ export class MediaPage implements OnInit, OnDestroy {
     { id: 'RESOURCES', label: 'Audio & resources' },
   ];
   readonly skeletonCards = [1, 2, 3, 4, 5, 6];
-  readonly filteredItems = computed(() => this.result()?.data ?? []);
+  readonly filteredItems = computed(() =>
+    (this.result()?.data ?? []).filter((item) =>
+      matchesMediaFilter(item.mediaType, this.activeFilter()),
+    ),
+  );
   private request?: Subscription;
   private requestedPage = 1;
 
@@ -66,9 +85,6 @@ export class MediaPage implements OnInit, OnDestroy {
   }
 
   private mediaTypesFor(filter: MediaFilter): readonly MediaType[] | undefined {
-    if (filter === 'ALL') return undefined;
-    if (filter === 'IMAGE') return ['IMAGE'];
-    if (filter === 'VIDEO') return ['VIDEO'];
-    return ['AUDIO', 'PODCAST', 'DOCUMENT', 'OTHER'];
+    return filter === 'ALL' ? undefined : FILTER_MEDIA_TYPES[filter];
   }
 }
