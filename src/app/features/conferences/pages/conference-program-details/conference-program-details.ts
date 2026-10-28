@@ -1,11 +1,24 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, RESPONSE_INIT, inject } from '@angular/core';
+import { Component, RESPONSE_INIT, computed, inject, signal } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { OnDestroy, OnInit, signal } from '@angular/core';
-import { Subject, Subscription, finalize, takeUntil } from 'rxjs';
-import { ConferenceProgramDetails as ConferenceProgramDetailsModel } from '../../interfaces/conference.interface';
+import { OnDestroy, OnInit } from '@angular/core';
+import { Subject, Subscription, catchError, finalize, forkJoin, of, takeUntil } from 'rxjs';
+import {
+  ConferenceEvent,
+  ConferenceProgramDetails as ConferenceProgramDetailsModel,
+  ConferenceProgramMedia,
+} from '../../interfaces/conference.interface';
 import { ConferencesService } from '../../services/conferences.service';
 import { SeoService } from '../../../../core';
+import { Livestream, MediaService } from '../../../media/services/media.service';
+import { MediaEmbedService } from '../../../media/services/media-embed.service';
+
+export function publishedConferenceEvents(
+  events: readonly ConferenceEvent[] | undefined,
+): ConferenceEvent[] {
+  return (events ?? []).filter((event) => event.publicationStatus === 'PUBLISHED');
+}
 
 @Component({
   selector: 'app-conference-program-details',
@@ -18,6 +31,16 @@ export class ConferenceProgramDetails implements OnInit, OnDestroy {
   readonly loading = signal(true);
   readonly loadError = signal(false);
   readonly errorKind = signal<'not-found' | 'unavailable'>('unavailable');
+  readonly streams = signal<Livestream[]>([]);
+  readonly publishedEvents = computed(() =>
+    publishedConferenceEvents(this.details()?.conferenceProgram.events),
+  );
+  readonly activeEvent = computed(
+    () => this.publishedEvents().find((event) => event.eventStatus === 'ACTIVE') ?? null,
+  );
+  readonly nextEvent = computed(
+    () => this.publishedEvents().find((event) => event.eventStatus === 'PLANNED') ?? null,
+  );
   private readonly responseInit = inject(RESPONSE_INIT, { optional: true });
   private request?: Subscription;
   private readonly destroyed$ = new Subject<void>();
@@ -25,6 +48,8 @@ export class ConferenceProgramDetails implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly conferencesApi: ConferencesService,
+    private readonly mediaApi: MediaService,
+    private readonly embeds: MediaEmbedService,
     private readonly seo: SeoService,
   ) {}
 
@@ -71,24 +96,53 @@ export class ConferenceProgramDetails implements OnInit, OnDestroy {
     return status.toLowerCase().replaceAll('_', ' ');
   }
 
+  streamFor(event: ConferenceEvent): Livestream | undefined {
+    return this.streams().find((stream) => stream.sessionId === event.id);
+  }
+
+  isLive(event: ConferenceEvent): boolean {
+    return this.streamFor(event)?.state === 'LIVE';
+  }
+
+  liveEmbed(event: ConferenceEvent): SafeResourceUrl | null {
+    const stream = this.streamFor(event);
+    return stream ? this.embeds.videoEmbedUrl(stream.url) : null;
+  }
+
+  eventMedia(event: ConferenceEvent): ConferenceProgramMedia[] {
+    return (this.details()?.media ?? []).filter(
+      (media) => media.targetType === 'EVENT' && media.targetId === event.id,
+    );
+  }
+
+  programMedia(): ConferenceProgramMedia[] {
+    const programId = this.details()?.conferenceProgram.id;
+    return (this.details()?.media ?? []).filter(
+      (media) => media.targetType === 'CONFERENCE_PROGRAM' && media.targetId === programId,
+    );
+  }
+
   private loadProgram(conferenceId: string, programId: string): void {
     this.request?.unsubscribe();
     this.loading.set(true);
     this.loadError.set(false);
-    this.request = this.conferencesApi
-      .getConferenceProgram(conferenceId, programId)
+    this.request = forkJoin({
+      details: this.conferencesApi.getConferenceProgram(conferenceId, programId),
+      streams: this.mediaApi.getLivestreams().pipe(catchError(() => of([]))),
+    })
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: (data) => {
-          this.details.set(data);
+        next: ({ details, streams }) => {
+          this.details.set(details);
+          this.streams.set(streams);
           this.seo.updatePage({
-            title: `${data.conferenceProgram.program.name} | ${data.conference.title}`,
+            title: `${details.conferenceProgram.program.name} | ${details.conference.title}`,
             description:
-              data.conferenceProgram.conferenceSummary ||
-              data.conferenceProgram.program.summary ||
-              data.conferenceProgram.program.description ||
-              data.conference.theme,
-            canonicalPath: `/conferences/${data.conference.id}/program/${data.conferenceProgram.id}`,
+              details.conferenceProgram.conferenceSummary ||
+              details.conferenceProgram.program.summary ||
+              details.conferenceProgram.program.description ||
+              details.conference.theme,
+            canonicalPath: `/conferences/${details.conference.id}/program/${details.conferenceProgram.id}`,
             type: 'article',
           });
         },

@@ -15,34 +15,57 @@
       <div class="actions"><app-button color="secondary" prefixIcon="fa-solid fa-rotate-right" (buttonClick)="retry()">Try again</app-button><a routerLink="/conferences">All conferences <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div>
     </section>
   } @else if (details(); as item) {
-    <header class="program-hero">
-      <div class="container">
+    <header class="program-hero" [class.has-cover]="!!item.conference.featuredMedia">
+      @if (item.conference.featuredMedia; as cover) { <img class="hero-cover" [src]="cover.url" [alt]="cover.altText || ''" /> }
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="container hero-content">
         <a [routerLink]="['/conferences', item.conference.id]"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ item.conference.title }}</a>
         <p class="eyebrow">{{ item.conference.year }} conference program</p>
         <h1>{{ item.conferenceProgram.program.name }}</h1>
         <p>{{ item.conferenceProgram.conferenceSummary || item.conferenceProgram.program.summary || item.conferenceProgram.program.description }}</p>
+        @if (activeEvent(); as event) {
+          <div class="hero-now">
+            <span><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i> {{ isLive(event) ? 'Live now' : 'Happening today' }}</span><strong>{{ event.title }}</strong>
+            @if (isLive(event)) { <a class="hero-action" [routerLink]="'/media/livestream'" [queryParams]="{ session: event.id }">Watch live <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a> } @else { <a class="hero-action" href="#schedule">View today’s schedule <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a> }
+          </div>
+        } @else if (nextEvent(); as event) {
+          <div class="hero-now hero-now--upcoming"><span>Coming up</span><strong>{{ event.title }} · {{ schedule(event.startAt, event.timezone) }}</strong><a class="hero-action" href="#schedule">View schedule <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></div>
+        }
       </div>
     </header>
 
-    <section class="program-overview">
-      <div class="container overview-grid">
-        <div><p class="eyebrow">About this program</p><h2>Part of {{ item.conference.title }}</h2><p>{{ item.conferenceProgram.conferenceSummary || item.conferenceProgram.program.description || 'More information about this program will be added soon.' }}</p></div>
-        <dl><div><dt>Conference</dt><dd>{{ item.conference.title }}</dd></div><div><dt>Theme</dt><dd>{{ item.conference.theme }}</dd></div><div><dt>Program dates</dt><dd>{{ item.conferenceProgram.startDate ? (item.conferenceProgram.startDate | date: 'mediumDate') : 'To be announced' }} – {{ item.conferenceProgram.endDate ? (item.conferenceProgram.endDate | date: 'mediumDate') : 'To be announced' }}</dd></div><div><dt>Main conference dates</dt><dd>{{ item.conference.startDate | date: 'mediumDate' }} – {{ item.conference.endDate | date: 'mediumDate' }}</dd></div><div><dt>Events</dt><dd>{{ item.conferenceProgram.events?.length || 0 }}</dd></div></dl>
-      </div>
-    </section>
+    @if (activeEvent(); as event) {
+      <section class="live-spotlight" [class.live-spotlight--on-air]="isLive(event)" aria-labelledby="live-title"><div class="container live-spotlight-grid">
+        <div><p class="eyebrow">{{ isLive(event) ? 'Live now' : 'Happening today' }}</p><h2 id="live-title">{{ event.title }}</h2><p>{{ schedule(event.startAt, event.timezone) }} – {{ schedule(event.endAt, event.timezone) }} · {{ event.defaultVenue?.name || 'Venue to be announced' }}</p>
+          @if (isLive(event)) { <a class="live-link" [routerLink]="'/media/livestream'" [queryParams]="{ session: event.id }">Watch live <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a> } @else if (streamFor(event); as stream) { <a class="live-link" [href]="stream.url" target="_blank" rel="noopener noreferrer">Watch the latest replay on YouTube <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a> }
+        </div>
+        @if (isLive(event) && liveEmbed(event); as embed) { <iframe [src]="embed" [title]="event.title + ' livestream'" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> }
+      </div></section>
+    }
 
-    <section class="program-timeline" aria-labelledby="events-title">
-      <div class="container">
-        <p class="eyebrow">What happened</p>
-        <h2 id="events-title">Events and sessions</h2>
-        @if (item.conferenceProgram.events?.length) {
-          <div class="event-list">
-            @for (event of item.conferenceProgram.events ?? []; track event.id) {
-              <article class="event-card"><div class="event-summary"><strong>{{ event.title }}</strong><span>{{ schedule(event.startAt, event.timezone) }} · {{ event.sessions?.length || 0 }} sessions</span></div><div class="event-content"><div class="meta"><span>{{ event.eventType }}</span><span>{{ readableStatus(event.eventStatus) }}</span></div>@if (event.summary) { <p>{{ event.summary }}</p> } @if (event.description) { <p>{{ event.description }}</p> }<dl class="event-facts"><div><dt>Starts</dt><dd>{{ schedule(event.startAt, event.timezone) }}</dd></div><div><dt>Ends</dt><dd>{{ schedule(event.endAt, event.timezone) }}</dd></div><div><dt>Format</dt><dd>{{ readableStatus(event.locationMode) }}</dd></div><div><dt>Registration</dt><dd>{{ event.registrationRequired ? 'Required' : 'Not required' }}</dd></div><div><dt>Venue</dt><dd>{{ event.defaultVenue?.name || 'Not assigned' }}</dd></div></dl>@if (event.sessions?.length) {<div class="sessions"><h3>Sessions · {{ event.sessions?.length }}</h3>@for (session of event.sessions ?? []; track session.id) {<details><summary><strong>{{ session.title }}</strong><span>{{ schedule(session.startAt, event.timezone) }}</span></summary><p>{{ session.description || 'Session details will be shared soon.' }}</p><small>{{ schedule(session.startAt, event.timezone) }} – {{ schedule(session.endAt, event.timezone) }} · {{ session.venue?.name || event.defaultVenue?.name || 'Venue to be announced' }}</small></details>}</div>}</div></article>
-            }
-          </div>
-        } @else { <p class="empty">No events have been published for this program yet.</p> }
-      </div>
-    </section>
+    <section class="program-overview"><div class="container overview-grid">
+      <div><p class="eyebrow">About this program</p><h2>Part of {{ item.conference.title }}</h2><p>{{ item.conferenceProgram.conferenceSummary || item.conferenceProgram.program.description || 'More information about this program will be added soon.' }}</p></div>
+      <dl><div><dt>Conference</dt><dd>{{ item.conference.title }}</dd></div><div><dt>Theme</dt><dd>{{ item.conference.theme }}</dd></div><div><dt>Program dates</dt><dd>{{ item.conferenceProgram.startDate ? (item.conferenceProgram.startDate | date: 'mediumDate') : 'To be announced' }} – {{ item.conferenceProgram.endDate ? (item.conferenceProgram.endDate | date: 'mediumDate') : 'To be announced' }}</dd></div><div><dt>Main conference dates</dt><dd>{{ item.conference.startDate | date: 'mediumDate' }} – {{ item.conference.endDate | date: 'mediumDate' }}</dd></div><div><dt>Events</dt><dd>{{ publishedEvents().length }}</dd></div></dl>
+    </div></section>
+
+    <section class="program-timeline" id="schedule" aria-labelledby="events-title"><div class="container">
+      <p class="eyebrow">{{ activeEvent() ? 'Schedule and replay' : 'Watch and revisit' }}</p><h2 id="events-title">{{ activeEvent() ? 'What is happening' : 'Events and replays' }}</h2>
+      @if (publishedEvents().length) {
+        <div class="event-list">@for (event of publishedEvents(); track event.id) {
+          <article class="event-card" [class.event-card--live]="isLive(event)" [class.event-card--active]="event.eventStatus === 'ACTIVE'">
+            <div class="event-summary"><div><span class="event-state" [class.event-state--live]="isLive(event)" [class.event-state--active]="event.eventStatus === 'ACTIVE'">{{ isLive(event) ? 'Live now' : readableStatus(event.eventStatus) }}</span><strong>{{ event.title }}</strong></div><span>{{ schedule(event.startAt, event.timezone) }}@if (event.sessions?.length) { · {{ event.sessions.length }} sessions }</span></div>
+            <div class="event-content">
+              @if (event.summary || event.description) { <p>{{ event.summary || event.description }}</p> }
+              <dl class="event-facts"><div><dt>Starts</dt><dd>{{ schedule(event.startAt, event.timezone) }}</dd></div><div><dt>Ends</dt><dd>{{ schedule(event.endAt, event.timezone) }}</dd></div><div><dt>Venue</dt><dd>{{ event.defaultVenue?.name || 'Not assigned' }}</dd></div></dl>
+              @if (isLive(event)) { <a class="event-live-link" [routerLink]="'/media/livestream'" [queryParams]="{ session: event.id }">Watch live <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a> }
+              @if (eventMedia(event).length) { <div class="event-media"><h3>{{ isLive(event) ? 'Live and related media' : 'Replays and media' }}</h3><div class="media-grid">@for (media of eventMedia(event); track media.id) { <app-media-card [item]="media" /> }</div></div> }
+              @if (event.sessions?.length) {<div class="sessions"><h3>Sessions · {{ event.sessions.length }}</h3>@for (session of event.sessions; track session.id) {<details><summary><strong>{{ session.title }}</strong><span>{{ schedule(session.startAt, event.timezone) }}</span></summary><p>{{ session.description || 'Session details will be shared soon.' }}</p><small>{{ schedule(session.startAt, event.timezone) }} – {{ schedule(session.endAt, event.timezone) }} · {{ session.venue?.name || event.defaultVenue?.name || 'Venue to be announced' }}</small></details>}</div>}
+            </div>
+          </article>
+        }</div>
+      } @else { <p class="empty">No published events have been added to this program yet.</p> }
+    </div></section>
+
+    @if (programMedia().length) { <section class="program-media" aria-labelledby="program-media-title"><div class="container"><p class="eyebrow">Program archive</p><h2 id="program-media-title">More to explore</h2><div class="media-grid">@for (media of programMedia(); track media.id) { <app-media-card [item]="media" /> }</div></div></section> }
   }
 </main>

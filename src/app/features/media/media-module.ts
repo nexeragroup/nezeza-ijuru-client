@@ -6,10 +6,9 @@ import { MediaPage } from './pages/media-page/media-page';
 import { LivestreamPage } from './pages/livestream-page/livestream-page';
 import { GalleryPage } from './pages/gallery-page/gallery-page';
 import { SharedModule } from '../../shared/shared.module';
-import { MediaCard } from './components/media-card/media-card';
 
 @NgModule({
-  declarations: [MediaPage, LivestreamPage, GalleryPage, MediaCard],
+  declarations: [MediaPage, LivestreamPage, GalleryPage],
   imports: [CommonModule, MediaRoutingModule, SharedModule],
 })
 export class MediaModule {}

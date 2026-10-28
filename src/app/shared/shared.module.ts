@@ -8,8 +8,9 @@ import { Button } from './components/button/button';
 import { Input } from './components/input/input';
 import { Loader } from './components/loader/loader';
 import { AlertContainer } from './components/alert/alert-container';
+import { MediaCard } from '../features/media/components/media-card/media-card';
 
-const COMPONENTS = [Badge, Button, Loader, Alert, AlertContainer, Input];
+const COMPONENTS = [Badge, Button, Loader, Alert, AlertContainer, Input, MediaCard];
 
 @NgModule({
   declarations: COMPONENTS,
