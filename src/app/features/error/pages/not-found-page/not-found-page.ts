@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, RESPONSE_INIT } from '@angular/core';
 
 @Component({
   selector: 'app-not-found-page',
@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   styleUrl: './not-found-page.css',
   templateUrl: './not-found-page.html',
 })
-export class NotFoundPage {}
+export class NotFoundPage {
+  private readonly responseInit = inject(RESPONSE_INIT);
+
+  constructor() {
+    if (this.responseInit) {
+      this.responseInit.status = 404;
+    }
+  }
+}
