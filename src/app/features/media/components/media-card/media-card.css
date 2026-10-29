@@ -138,8 +138,28 @@
   color: var(--brand-navy);
 }
 
+.media-card--compact {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+}
+
+.media-card--compact .media-preview > img,
+.media-card--compact .media-preview > video,
+.media-card--compact .media-preview > iframe {
+  height: clamp(11rem, 18vw, 15rem);
+  aspect-ratio: auto;
+}
+
+.media-card--compact .details {
+  min-height: 0;
+}
+
 @media (max-width: 680px) {
   .details {
     min-height: 0;
+  }
+
+  .media-card--compact {
+    grid-template-columns: 1fr;
   }
 }

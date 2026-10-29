@@ -207,9 +207,9 @@
 
 .live-spotlight-grid {
   display: grid;
-  grid-template-columns: minmax(0, .8fr) minmax(18rem, 1.2fr);
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 1fr);
   align-items: center;
-  gap: clamp(2rem, 6vw, 5rem);
+  gap: clamp(2rem, 4vw, 3.5rem);
 }
 
 .live-spotlight h2,
@@ -234,7 +234,7 @@
 .live-spotlight iframe {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: clamp(12rem, 22vw, 18rem);
   border: 0;
   background: var(--brand-navy);
   box-shadow: var(--shadow-md);
@@ -316,6 +316,7 @@ dd {
 }
 
 .event-card {
+  min-width: 0;
   overflow: hidden;
   border: 1px solid rgb(47 72 88 / 15%);
   border-radius: 1rem;
@@ -435,6 +436,13 @@ details small {
 .empty {
   margin-top: 1.5rem;
   opacity: .75;
+}
+
+@media (min-width: 800px) {
+  .event-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
 }
 
 @media (max-width: 760px) {

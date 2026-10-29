@@ -1,5 +1,5 @@
 @if (media; as item) {
-  <article class="media-card">
+  <article class="media-card" [class.media-card--compact]="compact">
     <div class="media-preview">
       <span class="media-type"
         ><i class="fa-solid {{ typeIcon }}" aria-hidden="true"></i>{{ typeLabel }}</span

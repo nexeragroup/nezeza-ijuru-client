@@ -12,6 +12,7 @@ import { MediaEmbedService } from '../../services/media-embed.service';
 export class MediaCard {
   media?: MediaItem;
   embed: SafeResourceUrl | null = null;
+  @Input() compact = false;
 
   constructor(private readonly embeds: MediaEmbedService) {}
 
